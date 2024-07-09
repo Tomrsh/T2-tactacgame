@@ -2,7 +2,9 @@
     margin: 0px;
     padding: 0px;
 }
-
+#game-name{
+    margin-top: 25px;
+}
 body{
     text-align: center;
     display: flex;
