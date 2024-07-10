@@ -42,18 +42,31 @@ body{
     font-size: 8vmin;
     color: brown;
 }
-
+.btn-container{
+    width: 350px;
+    height: 100px;
+}
 #reset-btn{
     padding: 1rem;
-    font-size: 1.25rem;
+    font-size: 0.75rem;
     background-color: red;
     color: white;
     border-radius: 20px;
+    font-weight: bold;
 }
 #next-game{
     padding: 1rem;
-    font-size: 1.25rem;
+    font-size: 0.75rem;
     background-color: red;
     color: white;
     border-radius: 20px;
+    font-weight: bold;
+}
+#computerModeBtn{
+    padding: 1rem;
+    font-size: 0.75rem;
+    background-color: red;
+    color: white;
+    border-radius: 20px;
+    font-weight: bold;
 }

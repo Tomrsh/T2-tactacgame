@@ -2,7 +2,7 @@ let boxes = document.querySelectorAll(".box");
 let resetBtn = document.querySelector("#reset-btn");
 let winnerName = document.getElementById("winnName");
 let nextBtn = document.getElementById("next-game");
-let compBtn = document.getElementById("computerModeBtn");
+
 let turnO = true;//Player X , Player O
 
 const winPatterns = [
@@ -19,17 +19,32 @@ const winPatterns = [
 boxes.forEach((box) => {
     box.addEventListener("click", () =>{
         console.log("Box was clicked !");
-        if (turnO) {
-            box.innerText = "O"; //Player O
-            turnO = false;
-        }else{
-            box.innerText = "X"; //Player x
-            turnO = true;
-        }
+        
+        box.innerText = "O"; //Player O
+        
+        
         box.disabled = true;
+        comPlay();
         checkWinner();
     })
 })
+
+const comPlay = () => {
+    computerP = boxes[(Math.floor(Math.random() * boxes.length))];
+    console.log(computerP.innerText);
+    if (computerP.innerText === "O" ) {
+        comPlay();
+    }else{
+        if (computerP.innerText === "X") {
+            comPlay();
+        }else{
+            computerP.innerText = "X";
+            computerP.disabled = true;
+        }
+    }
+}
+
+
 
 const disableBoxes = () => {
     for(let box of boxes){
@@ -47,7 +62,6 @@ const enableBoxes = () =>{
 
 resetBtn.addEventListener("click", enableBoxes);
 nextBtn.addEventListener("click", enableBoxes);
-compBtn.addEventListener("click", "compmode.html")
 
 const checkWinner = () => {
     for(pattern of winPatterns) {
