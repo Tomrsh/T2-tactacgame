@@ -15,8 +15,8 @@ body{
 
 .container{
     margin-top: 10vmin;
-    height: 180px;
-    width: 180px;
+    height: 150px;
+    width: 150px;
     
     display: flex;
     justify-content: center;
@@ -25,8 +25,8 @@ body{
 }
 .game{
     text-align: center;
-    height: 180px;
-    width: 180px;
+    height: 150px;
+    width: 150px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
