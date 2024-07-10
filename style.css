@@ -15,9 +15,9 @@ body{
 
 .container{
     margin-top: 10vmin;
-    height: 160px;
-    width: 160px;
-    
+    height: 350px;
+    width: 350px;
+    background-color: blue;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -26,8 +26,8 @@ body{
 }
 .game{
     text-align: center;
-    height: 160px;
-    width: 160px;
+    height: 350px;
+    width: 350px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -36,8 +36,8 @@ body{
 }
 
 .box{
-    height: 50px;
-    width: 50px;
+    height: 100px;
+    width: 100px;
     border-radius: 1rem;
     font-size: 8vmin;
     color: brown;
