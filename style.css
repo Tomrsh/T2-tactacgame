@@ -15,8 +15,8 @@ body{
 
 .container{
     margin-top: 10vmin;
-    height: 400px;
-    width: 400px;
+    height: 350px;
+    width: 350px;
     
     display: flex;
     justify-content: center;
