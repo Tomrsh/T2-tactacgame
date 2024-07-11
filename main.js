@@ -47,7 +47,6 @@ const enableBoxes = () =>{
 
 resetBtn.addEventListener("click", enableBoxes);
 nextBtn.addEventListener("click", enableBoxes);
-compBtn.addEventListener("click", "compmode.html")
 
 const checkWinner = () => {
     for(pattern of winPatterns) {
