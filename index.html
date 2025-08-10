@@ -3,37 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T2-TIKTAKTOE</title>
+    <title>Smart Tic-Tac-Toe</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-      
-
-    </style>
 </head>
 <body>
-    <main>
-        <h1 id="game-name">Tic tac toe</h1><br>
-        <h2 id="winnName">Winner is : not defind</h2>
-        <div class="container">
-            <div class="game">
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-            </div>
+    <div class="game-container">
+        <h1>Smart Tic-Tac Game</h1>
+        <div id="active-badge"></div>
+        
+        <div class="controls">
+            <label for="difficulty-select">Select Difficulty:</label>
+            <select id="difficulty-select">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
         </div>
-        <div class="btn-container">
-            <button id="reset-btn">Reset the game</button>
-            <button id="next-game">Next Game</button>
-            <a href="compmode.html"><button id="computerModeBtn">Computer</button></a>
-            
+
+        <div class="game-info">
+            <span id="level-display">Level: 1</span>
         </div>
-    </main>
-    <script src="main.js"></script>
+
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div class="message" id="message"></div>
+        <button id="restart-button">Restart Game</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2 id="popup-text"></h2>
+            <div id="stars"></div>
+            <button id="close-popup">Next Level</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
