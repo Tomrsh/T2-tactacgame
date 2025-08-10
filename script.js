@@ -7,14 +7,18 @@ const closePopupButton = document.getElementById('close-popup');
 const levelDisplay = document.getElementById('level-display');
 const difficultySelect = document.getElementById('difficulty-select');
 const activeBadge = document.getElementById('active-badge');
+const computerModeBtn = document.getElementById('computer-mode-btn');
+const friendsModeBtn = document.getElementById('friends-mode-btn');
+const computerControls = document.getElementById('computer-controls');
 
 let boardState;
 let currentPlayer;
 let gameActive;
 let currentLevel = 1;
 let difficulty;
-let lastWinner = 'user'; // 'user', 'ai', 'draw' - Track the winner of the last game
-let lastSecondPlayer = 'O'; // Track who played second in the last game
+let lastWinner = 'user';
+let lastSecondPlayer = 'O';
+let gameMode = 'computer';
 
 const winConditions = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -27,21 +31,25 @@ const initializeGame = (resetLevel = false) => {
     gameActive = true;
     if (resetLevel) {
         currentLevel = 1;
-        lastWinner = 'user'; // Default to user on full restart
-        lastSecondPlayer = 'O'; // Default to AI on full restart
+        lastWinner = 'user'; 
+        lastSecondPlayer = 'O'; 
     }
     
-    // Set first player based on last result
-    if (lastWinner === 'user') {
-        currentPlayer = 'X'; // User won last time, so they start
-    } else if (lastWinner === 'ai') {
-        currentPlayer = 'O'; // AI won last time, so they start
-    } else { // It was a draw
-        if (lastSecondPlayer === 'X') {
-            currentPlayer = 'X'; // User played second last time, so they start
+    // Set first player based on last result and mode
+    if (gameMode === 'computer') {
+        if (lastWinner === 'user') {
+            currentPlayer = 'X';
+        } else if (lastWinner === 'ai') {
+            currentPlayer = 'O';
         } else {
-            currentPlayer = 'O'; // AI played second last time, so they start
+            if (lastSecondPlayer === 'X') {
+                currentPlayer = 'X';
+            } else {
+                currentPlayer = 'O';
+            }
         }
+    } else { // Friends mode
+        currentPlayer = 'X';
     }
 
     difficulty = difficultySelect.value;
@@ -55,15 +63,26 @@ const initializeGame = (resetLevel = false) => {
     });
     popup.style.display = 'none';
 
-    // If AI is the first player, start its turn
-    if (currentPlayer === 'O') {
-        message.textContent = 'AI सोच रहा है...';
-        setTimeout(handleAITurn, 700);
+    if (gameMode === 'computer') {
+        computerControls.classList.remove('hidden');
+        if (currentPlayer === 'O') {
+            message.textContent = 'AI सोच रहा है...';
+            setTimeout(handleAITurn, 700);
+        }
+    } else { // Friends mode
+        computerControls.classList.add('hidden');
     }
+
+    updateBadge();
 };
 
 const updateBadge = () => {
     activeBadge.className = '';
+    
+    if (gameMode === 'friends') {
+        activeBadge.style.display = 'none';
+        return;
+    }
     
     let badgeClass = '';
     if (currentLevel >= 5 && currentLevel < 10) {
@@ -90,7 +109,7 @@ const handleCellClick = (e) => {
     const clickedCell = e.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
-    if (boardState[clickedCellIndex] !== '' || !gameActive || currentPlayer === 'O') {
+    if (boardState[clickedCellIndex] !== '' || !gameActive) {
         return;
     }
 
@@ -98,8 +117,13 @@ const handleCellClick = (e) => {
     checkResult();
 
     if (gameActive) {
-        message.textContent = 'AI सोच रहा है...';
-        setTimeout(handleAITurn, 700);
+        if (gameMode === 'computer') {
+            message.textContent = 'AI सोच रहा है...';
+            setTimeout(handleAITurn, 700);
+        } else { // Friends mode
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            message.textContent = `आपकी बारी (${currentPlayer})`;
+        }
     }
 };
 
@@ -136,13 +160,20 @@ const checkResult = () => {
         if (currentPlayer === 'X') {
             resultText = 'बधाई हो, आप जीत गए! 🎉';
             stars = 5; 
-            currentLevel++;
-            updateBadge();
-            lastWinner = 'user';
+            if (gameMode === 'computer') {
+                currentLevel++;
+                updateBadge();
+                lastWinner = 'user';
+            }
         } else {
-            resultText = 'AI जीत गया! अगली बार कोशिश करें।';
+            resultText = 'बधाई हो, AI जीत गया! अगली बार कोशिश करें।';
+            if (gameMode === 'friends') {
+                resultText = 'बधाई हो, O जीत गया! 🎉';
+            }
             stars = 0;
-            lastWinner = 'ai';
+            if (gameMode === 'computer') {
+                lastWinner = 'ai';
+            }
         }
         showPopup(resultText, stars);
         return;
@@ -153,15 +184,16 @@ const checkResult = () => {
         gameActive = false;
         const resultText = 'यह एक ड्रॉ है! 🤝';
         showPopup(resultText, 1);
-        lastWinner = 'draw';
-        lastSecondPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        if (gameMode === 'computer') {
+            lastWinner = 'draw';
+            lastSecondPlayer = currentPlayer;
+        }
         return;
     }
-
-    lastSecondPlayer = currentPlayer; // Track who is playing second
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    if (gameActive) {
-        message.textContent = `आपकी बारी (${currentPlayer})`;
+    
+    if (gameMode === 'computer') {
+        lastSecondPlayer = currentPlayer;
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     }
 };
 
@@ -173,7 +205,7 @@ const showPopup = (text, stars) => {
     if (text.includes('बधाई हो')) {
         popupText.classList.add('win-text');
         closePopupButton.textContent = 'Next Level';
-    } else if (text.includes('AI जीत गया')) {
+    } else if (text.includes('जीत गया!')) {
         popupText.classList.add('lose-text');
         closePopupButton.textContent = 'Play Again';
     } else {
@@ -291,6 +323,21 @@ const checkWinner = (board) => {
     if (!board.includes('')) return 'draw';
     return null;
 };
+
+// Event Listeners for new mode buttons
+computerModeBtn.addEventListener('click', () => {
+    gameMode = 'computer';
+    computerModeBtn.classList.add('active');
+    friendsModeBtn.classList.remove('active');
+    initializeGame(true);
+});
+
+friendsModeBtn.addEventListener('click', () => {
+    gameMode = 'friends';
+    friendsModeBtn.classList.add('active');
+    computerModeBtn.classList.remove('active');
+    initializeGame(true);
+});
 
 restartButton.addEventListener('click', () => initializeGame(false));
 closePopupButton.addEventListener('click', () => {
