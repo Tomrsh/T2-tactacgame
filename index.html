@@ -3,25 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Tic-Tac-Toe</title>
+    <title>Advanced Tic-Tac-Toe</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Smart Tic-Tac Game</h1>
+        <h1>Advanced Tic-Tac-Toe</h1>
         <div id="active-badge"></div>
         
-        <div class="controls">
-            <label for="difficulty-select">Select Difficulty:</label>
-            <select id="difficulty-select">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
+        <div class="mode-select">
+            <button id="computer-mode-btn" class="active">Computer Mode</button>
+            <button id="friends-mode-btn">Friends Mode</button>
         </div>
 
-        <div class="game-info">
-            <span id="level-display">Level: 1</span>
+        <div id="computer-controls">
+            <div class="controls">
+                <label for="difficulty-select">Select Difficulty:</label>
+                <select id="difficulty-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div class="game-info">
+                <span id="level-display">Level: 1</span>
+            </div>
         </div>
 
         <div class="board" id="board">
